@@ -1,0 +1,23 @@
+{
+  "name": "employeetracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anurav18/EmployeeTracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anurav18/EmployeeTracker/issues"
+  },
+  "homepage": "https://github.com/anurav18/EmployeeTracker#readme",
+  "dependencies": {
+    "mysql": "^2.16.0",
+    "inquirer": "^6.3.1"
+  }
+}
