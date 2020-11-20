@@ -42,14 +42,17 @@ function start() {
       }
     ])
       .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
         if (answer.Table === "departments") {
             console.log(answer.Action);
           Departments(answer.Action);
         }
         else if(answer.Table === "roles") {
           Roles(answer.Action);
-        } else{
+        } 
+        else if(answer.Table === "employees"){
+          employees(answer.Action);
+        }
+        else{
           connection.end();
         }
       });
@@ -57,19 +60,16 @@ function start() {
 
 //Add a new item to departments table
   function Departments(action) {
-    // prompt for info about the item being put up for auction
     switch(action){
        case "post":
         inquirer
         .prompt([
-          {
-            name: "department_name",
+          {  name: "department_name",
             type: "input",
-            message: "What is the Name of the department?"
+            message: "What is the Name of the department?"   
           }
         ])
         .then(function(answer) {
-          // when finished prompting, insert a new item into the db with that info
           connection.query(
             "INSERT INTO department SET ?",
             {
@@ -78,7 +78,6 @@ function start() {
             function(err) {
               if (err) throw err;
               console.log("A entry is successfully created in Departments table!");
-              // re-prompt the user for if they want to bid or post
               start();
             }
           );
@@ -86,9 +85,39 @@ function start() {
         break;
 
         case "update":
-            console.log("updated!");
-            start();
-            break;
+            inquirer.prompt([
+            {
+                name:"field_id",
+                type:"number",
+                message:"enter id of the department you would like to update"
+                
+            },
+            {
+                name: "update_field",
+                type: "input",
+                message: "Enter the updated value of the department?"
+
+            }
+            ]).then(function(answer){
+                connection.query(
+                    "UPDATE department SET ? WHERE ?",
+                    [
+                      {
+                        department_name: answer.update_field
+                      },
+                      {
+                        id:answer.field_id
+                      }
+                    ],
+                    function(error) {
+                      if (error) throw err;
+                      console.log("item updated successfully!");
+                      start();
+                    }
+                  );
+                });
+                
+                break;
         
         case "read":
             connection.query(
@@ -96,16 +125,11 @@ function start() {
                 function(err,result) {
                   if (err) throw err;
                   console.log(result);
-                  console.log(result[0].id);
-                  // re-prompt the user for if they want to bid or post
                   start();
                 }
               );
               break;
-
-
     }
-  
   }
 
   function Roles(action){
@@ -130,7 +154,6 @@ function start() {
             }
             ])
             .then(function(answer) {
-            // when finished prompting, insert a new item into the db with that info
             connection.query(
                 "INSERT INTO role SET ?",
                 {
@@ -141,7 +164,6 @@ function start() {
                 function(err) {
                 if (err) throw err;
                 console.log("A entry is successfully created in Roles table!");
-                // re-prompt the user for if they want to bid or post
                 start();
                 }
             );
@@ -159,13 +181,72 @@ function start() {
                 function(err,result) {
                   if (err) throw err;
                   console.log(result);
-                  console.log(result[0].id);
-                  // re-prompt the user for if they want to bid or post
                   start();
                 }
               );
               break;
-
-
     }
+  }
+
+  function employees(action)
+  {
+      switch(action){
+          case "post":
+              inquirer.prompt([
+              {
+                  name: "first_name",
+                  type: "input",
+                  message:"Please enter the first name of the employee"
+              },
+              {
+                name: "last_name",
+                type: "input",
+                message:"Please enter the last name of the employee"
+            },
+            {
+                name: "role_id",
+                type: "input",
+                message:"Please enter the role id"
+            },
+            {
+                name: "manager_id",
+                type: "input",
+                message:"Please enter the ID of the Manager"
+            } 
+        ]).then(function(answer){
+            connection.query(
+                "INSERT INTO employee SET ?",
+                {
+                    first_name: answer.first_name,
+                    last_name:answer.last_name,
+                    role_id:answer.role_id,
+                    manager_id:answer.manager_id
+                },
+                function(err) {
+                if (err) throw err;
+                console.log("A entry is successfully created in Employees table!");
+                // re-prompt the user for if they want to bid or post
+                start();
+                }
+            );
+        })
+              break;
+
+          case "update":
+              break;
+
+          case "read":
+              connection.query(
+                  "SELECT * FROM employee",
+                  function(err,result){
+                      if (err) throw err;
+                      console.log(result);
+                      start();
+                  }
+
+              );
+              break;
+      }
+
+
   }
