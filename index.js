@@ -190,6 +190,38 @@ function start() {
     }
   }
 
+
+//Create a list of Roles
+var rolesArr = [];
+function Roleslist(){
+    connection.query(
+        "SELECT * FROM role",
+        function(err,result) {
+          if (err) throw err;
+          for(i = 0; i < result.length;i++)
+          {
+             rolesArr.push(result[i].role_title);
+          }  
+        });
+      return rolesArr;
+}
+
+var managersArr = [];
+function ManagersList(){
+    connection.query(
+        "SELECT first_name,last_name FROM employee WHERE role_id = 1",
+        function(err,result) {
+          if (err) throw err;
+          for(i = 0; i < result.length;i++)
+          {
+             managersArr.push(result[i].first_name);
+          }  
+        });
+      return managersArr;
+}
+
+///
+
   function employees(action)
   {
       switch(action){
@@ -206,23 +238,27 @@ function start() {
                 message:"Please enter the last name of the employee"
             },
             {
-                name: "role_id",
-                type: "input",
-                message:"Please enter the role id"
+                name: "role",
+                type: "list",
+                message:"Please select the role from list",
+                choices: Roleslist()
             },
             {
                 name: "manager_id",
-                type: "input",
-                message:"Please enter the ID of the Manager"
+                type: "rawlist",
+                message:"Please enter the Name of Manager",
+                choices: ManagersList()
             } 
         ]).then(function(answer){
+            var role_id = Roleslist().indexOf(answer.role)+1;
+            var manager_id = ManagersList().indexOf(answer.manager_id)+1;
             connection.query(
                 "INSERT INTO employee SET ?",
                 {
                     first_name: answer.first_name,
                     last_name:answer.last_name,
-                    role_id:answer.role_id,
-                    manager_id:answer.manager_id
+                    role_id:role_id,
+                    manager_id:manager_id
                 },
                 function(err) {
                 if (err) throw err;
