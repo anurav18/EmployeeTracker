@@ -23,6 +23,7 @@ var connection = mysql.createConnection({
     start();
   });
 
+  
   //Function to know which table needs to have an action
 
   // function which prompts the user for what action they should take
@@ -60,7 +61,9 @@ function start() {
 
 //Add a new item to departments table
   function Departments(action) {
+
     switch(action){
+        //Add a new item to the department table
        case "post":
         inquirer
         .prompt([
@@ -83,7 +86,7 @@ function start() {
           );
         });
         break;
-
+        //Update the departments Table
         case "update":
             inquirer.prompt([
             {
@@ -118,13 +121,13 @@ function start() {
                 });
                 
                 break;
-        
+        //Read the SQL table
         case "read":
             connection.query(
-                "SELECT * FROM department",
+                "SELECT department.id as ID,department.department_name as DEPARTMENT from department ",
                 function(err,result) {
                   if (err) throw err;
-                  console.log(result);
+                  console.table(result);
                   start();
                 }
               );
@@ -171,8 +174,7 @@ function start() {
             break;
 
         case "update":
-            console.log("updated!");
-            start();
+            
             break;
         
         case "read":
@@ -180,7 +182,7 @@ function start() {
                 "SELECT * FROM role",
                 function(err,result) {
                   if (err) throw err;
-                  console.log(result);
+                  console.table(result);
                   start();
                 }
               );
@@ -237,10 +239,10 @@ function start() {
 
           case "read":
               connection.query(
-                  "SELECT * FROM employee",
+                  "SELECT employee.first_name as FirstName, employee.last_name as LastName, role.role_title as Role, department.department_name as DEPARTMENT FROM employee,role,department WHERE department.id = role.department_id and role.id = employee.role_id",
                   function(err,result){
                       if (err) throw err;
-                      console.log(result);
+                      console.table(result);
                       start();
                   }
 
