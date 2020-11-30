@@ -300,8 +300,6 @@ function ManagersList(){
                   console.log("Updated employee role successfully");
                   start();
                 })
-               
-
               })
             });
 
@@ -319,6 +317,4 @@ function ManagersList(){
               );
               break;
       }
-
-
   }

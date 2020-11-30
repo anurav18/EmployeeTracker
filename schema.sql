@@ -34,18 +34,14 @@ INSERT INTO department (department_name) VALUES ("Accounting");
 INSERT INTO department (department_name) VALUES ("R&D");
 INSERT INTO department (department_name) VALUES ("HR");
 
-
 INSERT INTO role(role_title,salary,department_id) VALUES ("Manager",100000.67,3);
 INSERT INTO role(role_title,salary,department_id) VALUES ("Engineer",90000.67,3);
-INSERT INTO role(role_title,salary,department_id) VALUES ("Manager",70000.67,2);
 INSERT INTO role(role_title,salary,department_id) VALUES ("Intern",80000.67,2);
-INSERT INTO role(role_title,salary,department_id) VALUES ("Manager",100000.67,4);
-INSERT INTO role(role_title,salary,department_id) VALUES ("Engineer",98000.67,2);
-INSERT INTO role(role_title,salary,department_id) VALUES ("Engineer",98000.67,1);
+INSERT INTO role(role_title,salary,department_id) VALUES ("Associate Engineer",100000.67,4);
+INSERT INTO role(role_title,salary,department_id) VALUES ("Systems Engineer",98000.67,2);
 
-
-INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES("Anu","Rav",1);
-INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES("Ash","Aita",6,1);
+INSERT INTO employee(first_name,last_name,role_id) VALUES("Anu","Rav",1);
+INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES("Ash","Aita",5,1);
 INSERT INTO employee(first_name,last_name,role_id,manager_id) VALUES("Phane","Rav",4,2);
 
 
