@@ -263,7 +263,6 @@ function ManagersList(){
                 function(err) {
                 if (err) throw err;
                 console.log("A entry is successfully created in Employees table!");
-                // re-prompt the user for if they want to bid or post
                 start();
                 }
             );
@@ -271,6 +270,41 @@ function ManagersList(){
               break;
 
           case "update":
+            connection.query("SELECT employee.last_name, role.role_title FROM employee JOIN role ON employee.role_id = role.id;",
+            function(err,res){
+              if(err) throw err;
+              console.log(res);
+              inquirer.prompt([
+                {
+                  name: "last_name",
+                  type: "input",
+                  message:"Please enter the last name of the employee you would like to update"
+              },
+              {
+                name: "role",
+                type: "list",
+                message:"Please select the role from the list",
+                choices:Roleslist()
+            }
+              ]).then(function(answer){
+                var role_id = Roleslist().indexOf(answer.role)+1;
+                connection.query("UPDATE employee SET ? WHERE ?",[{
+                  role_id:role_id
+                },
+                {
+                   
+                   last_name: answer.last_name
+                }],
+                function(err){
+                  if(err) throw err;
+                  console.log("Updated employee role successfully");
+                  start();
+                })
+               
+
+              })
+            });
+
               break;
 
           case "read":
